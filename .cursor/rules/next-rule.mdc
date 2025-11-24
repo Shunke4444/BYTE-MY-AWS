@@ -1,12 +1,17 @@
 ---
-description: NextGen Intelligent Conversational Agents Development Standards with Agora Integration, Real-Time Communication, AI/ML, and Enterprise Architecture
+description: NextGen Intelligent Conversational Agents Development Standards with Agora AI, Agora SDK, AWS Services, Real-Time Communication, and Enterprise Architecture
 globs:
 alwaysApply: true
 ---
 
 # NextGen Intelligent Conversational Agents Development Standards
 
-You are an expert in TypeScript, Node.js, Next.js App Router, React, Agora SDK (RTC, RTM, Live Streaming), AI/ML integration, NLP/NLU engines, WebRTC, real-time communication, enterprise architecture, and scalable conversational agent systems. Follow layered architecture patterns aligned with SOLID principles while prioritizing real-time performance, intelligent agent capabilities, security, scalability, and seamless integration with third-party services.
+**BIG REQUIREMENTS:**
+1. **Agora AI** - PRIMARY conversational AI platform for agent intelligence, NLP/NLU, and agent responses (MUST use)
+2. **Agora SDK** - For real-time communication (RTC, RTM, Live Streaming) (MUST use)
+3. **AWS Services** - For backend infrastructure, storage, compute, and supporting services (MUST use)
+
+You are an expert in TypeScript, Node.js, Next.js App Router, React, **Agora AI** (conversational AI platform), **Agora SDK** (RTC, RTM, Live Streaming), **AWS Services** (Lambda, API Gateway, DynamoDB, S3, Cognito, CloudWatch, etc.), AI/ML integration, NLP/NLU engines, WebRTC, real-time communication, enterprise architecture, and scalable conversational agent systems. Follow layered architecture patterns aligned with SOLID principles while prioritizing real-time performance, intelligent agent capabilities, security, scalability, and seamless integration with Agora AI, Agora SDK, and AWS services.
 
 # 0. DEVELOPMENT PHILOSOPHY AND CORE PRINCIPLES
 
@@ -43,11 +48,17 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Agora SDK (
 ## 1.1 Layered Architecture for Conversational Agents
 
 ### Services
-- Provide stable access to Agora SDK (RTC, RTM, Live Streaming) and third-party APIs
+- **MUST use Agora AI** as PRIMARY conversational AI platform for agent intelligence and NLP/NLU
+- **MUST use Agora SDK** for real-time communication (RTC, RTM, Live Streaming)
+- **MUST use AWS services** for backend infrastructure, storage, and compute
+- Provide stable access to Agora AI API and Agora SDK (RTC, RTM, Live Streaming)
+- Integrate Agora AI for NLP/NLU, intent recognition, entity extraction, and agent responses (PRIMARY)
+- Use AWS Lambda for serverless backend processing and API Gateway for endpoints
+- Leverage AWS DynamoDB for conversation storage and S3 for media/assets
 - Transform raw agent data into conversation-ready shapes optimized for real-time interactions
 - Keep network logic out of UI components while supporting real-time communication
-- Integrate NLP/NLU engines for intelligent conversation understanding
-- Manage agent state and conversation context across sessions
+- Integrate Agora AI for intelligent conversation understanding (PRIMARY), with AWS AI services as complementary
+- Manage agent state and conversation context across sessions using AWS services
 
 ### Hooks
 - Manage real-time state transitions for agent interactions (RTC connections, RTM messages, agent responses)
@@ -99,24 +110,53 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Agora SDK (
       useHumanHandoff.ts
       useAgentContext.ts
     services/
-      agoraService.ts
+      agora/
+        agoraAIService.ts  (Agora AI - PRIMARY)
+        agoraRTCService.ts
+        agoraRTMService.ts
+        agoraLiveStreamService.ts
       agentService.ts
-      nlpService.ts
       conversationService.ts
+      aws/
+        dynamoService.ts
+        s3Service.ts
+        cognitoService.ts
+        lambdaService.ts
+        comprehendService.ts  (complementary)
+        bedrockService.ts  (complementary)
     lib/
-      agoraConfig.ts
+      agora/
+        agoraAIConfig.ts  (Agora AI config)
+        agoraRTCConfig.ts
+        agoraRTMConfig.ts
       agentUtils.ts
       conversationHelpers.ts
+      aws/
+        awsConfig.ts
+        awsClient.ts
+        awsUtils.ts
     app/  (feature folders)
+  infrastructure/
+    cdk/  (AWS CDK infrastructure as code)
+    cloudformation/  (CloudFormation templates)
+    sam/  (AWS SAM templates)
 
-Focus on discoverability, simplicity, consistent patterns, and real-time performance.
+**BIG REQUIREMENTS:**
+- **Agora AI** - PRIMARY conversational AI platform (MUST use)
+- **Agora SDK** - For real-time communication (RTC, RTM, Live Streaming) (MUST use)
+- **AWS Services** - For backend infrastructure, storage, and compute (MUST use)
+
+Focus on discoverability, simplicity, consistent patterns, real-time performance, and integration with Agora AI, Agora SDK, and AWS services.
 
 ## 2.2 Naming Rules for Conversational Agents
-- Hooks describe agent behavior: useAgoraRTC, useRTMMessaging, useAgentConversation, useHumanHandoff
-- Services describe agent data sources: agoraService, agentService, nlpService, conversationService
+- Hooks describe agent behavior: useAgoraRTC, useRTMMessaging, useAgentConversation, useAgoraAI, useHumanHandoff
+- Services describe agent data sources: agoraAIService (PRIMARY), agoraRTCService, agoraRTMService, agentService, conversationService
+- AWS services use descriptive names: dynamoService, s3Service, cognitoService, lambdaService
 - Components describe what the user sees: AgentChat, AgentVideoCall, AgentLiveStream, CollaborationTools
 - Files match default exports exactly
 - Avoid abbreviations that hide meaning, especially for agent features
+- Agora AI service files should clearly indicate Agora AI usage (e.g., agoraAIService.ts)
+- AWS service files should clearly indicate AWS service usage (e.g., awsDynamoService.ts)
 
 # 3. REACT COMPONENT ARCHITECTURE WITH CONVERSATIONAL AGENT USABILITY
 
@@ -288,12 +328,16 @@ Agent components should function like modular real-time building blocks:
 # 11. AI/ML INTEGRATION FOR CONVERSATIONAL AGENTS
 
 ## 11.1 NLP/NLU Engine Integration
-- Integrate with third-party NLP/NLU services (OpenAI, Anthropic, custom)
-- Handle intent recognition and entity extraction
-- Manage conversation context and memory
-- Implement proper error handling for AI service failures
-- Support multiple AI providers with fallback mechanisms
-- Cache AI responses appropriately for performance
+- **PRIORITIZE Agora AI** as PRIMARY conversational AI platform for NLP/NLU
+- **Use Agora AI** for intent recognition, entity extraction, and agent responses (PRIMARY)
+- Integrate Agora AI API for conversational agent intelligence and natural language understanding
+- Use AWS Comprehend or AWS Bedrock as complementary services if needed
+- Support AWS AI services (Bedrock, Comprehend) as complementary or fallback
+- Handle intent recognition and entity extraction using Agora AI (PRIMARY)
+- Manage conversation context and memory using AWS DynamoDB
+- Implement proper error handling for AI service failures with AWS fallback
+- Support multiple AI providers with Agora AI as primary, AWS/third-party as fallback
+- Cache AI responses appropriately using AWS ElastiCache
 
 ## 11.2 Agent Intelligence
 - Implement context-aware conversation management
@@ -409,18 +453,117 @@ Agent components should function like modular real-time building blocks:
 - Test real-time communication scenarios
 - Test AI/ML integration and fallback mechanisms
 
-# 17. DOCUMENTATION FOR CONVERSATIONAL AGENTS
+# 17. AGORA AI INTEGRATION (PRIMARY CONVERSATIONAL AI)
 
-## 17.1 Rules for Agent Documentation
+## 17.1 Agora AI Platform
+- **MUST use Agora AI** as PRIMARY conversational AI platform
+- Integrate Agora AI API for agent intelligence, NLP/NLU, and conversation management
+- Use Agora AI for intent recognition and entity extraction (PRIMARY)
+- Leverage Agora AI for natural language understanding and agent responses
+- Implement Agora AI for conversation context management and multi-turn conversations
+- Use Agora AI for agent personality and tone customization
+- Support Agora AI conversation routing and escalation logic
+- Implement proper error handling and fallback for Agora AI service
+
+## 17.2 Agora AI Features
+- Integrate Agora AI for real-time agent responses
+- Use Agora AI for conversation analytics and learning
+- Leverage Agora AI for specialized agent capabilities (B2B, healthcare, education)
+- Implement Agora AI for knowledge base integration
+- Use Agora AI for predictive analytics and proactive suggestions
+- Support Agora AI for multi-language and localization
+
+# 18. AWS SERVICES INTEGRATION (BACKEND INFRASTRUCTURE)
+
+## 18.1 AWS Services Architecture
+- **MUST use AWS services** for backend infrastructure, storage, and compute
+- Design agent architecture leveraging AWS serverless and managed services
+- Use AWS Lambda for serverless backend processing and business logic
+- Implement AWS API Gateway for RESTful and WebSocket APIs
+- Leverage AWS DynamoDB for conversation storage, user data, and agent state
+- Use AWS S3 for media storage (audio, video, documents, agent assets)
+- Implement AWS Cognito for authentication and user management
+- Use AWS CloudWatch for monitoring, logging, and observability
+- Leverage AWS IAM for security and access control
+
+## 18.2 AWS AI/ML Services (Complementary)
+- **Use AWS Bedrock** for LLM integration as complementary to Agora AI
+- Leverage **AWS Comprehend** for additional NLP/NLU capabilities if needed
+- Use **AWS Transcribe** for speech-to-text in agent interactions
+- Use **AWS Polly** for text-to-speech in agent responses
+- Leverage **AWS Rekognition** for image/video analysis if needed
+- Use **AWS SageMaker** for custom ML model training and deployment
+- Implement **AWS Kendra** for intelligent search and knowledge base integration
+
+## 18.3 AWS Real-Time & Communication Services
+- Use **AWS AppSync** for real-time GraphQL subscriptions
+- Leverage **AWS IoT Core** for real-time messaging if applicable
+- Use **AWS EventBridge** for event-driven agent architecture
+- Implement **AWS SQS** and **AWS SNS** for message queuing and notifications
+- Use **AWS Kinesis** for real-time data streaming and analytics
+- Leverage **AWS CloudFront** for CDN and global content delivery
+
+## 18.4 AWS Storage & Database Services
+- Use **AWS DynamoDB** for conversation logs, user data, and agent state (NoSQL)
+- Implement **AWS RDS** or **AWS Aurora** for relational data if needed
+- Use **AWS S3** for media storage, agent assets, and conversation backups
+- Leverage **AWS ElastiCache** (Redis/Memcached) for caching and session management
+- Use **AWS DocumentDB** for document storage if needed
+- Implement **AWS Glacier** for long-term conversation archive storage
+
+## 18.5 AWS Security & Compliance Services
+- Use **AWS Cognito** for user authentication and authorization
+- Implement **AWS Secrets Manager** for API keys, tokens, and sensitive data
+- Use **AWS KMS** for encryption key management
+- Leverage **AWS WAF** for web application firewall protection
+- Use **AWS Shield** for DDoS protection
+- Implement **AWS CloudTrail** for audit logging and compliance
+- Use **AWS GuardDuty** for threat detection
+- Leverage **AWS IAM** for fine-grained access control
+
+## 18.6 AWS DevOps & Infrastructure
+- Use **AWS CDK** or **AWS CloudFormation** for Infrastructure as Code
+- Implement **AWS CodePipeline** and **AWS CodeBuild** for CI/CD
+- Use **AWS ECS** or **AWS EKS** for containerized deployments if needed
+- Leverage **AWS CloudWatch** for monitoring, metrics, and alarms
+- Use **AWS X-Ray** for distributed tracing
+- Implement **AWS Systems Manager** for configuration management
+- Use **AWS VPC** for network isolation and security
+
+## 18.7 AWS Cost Optimization
+- Optimize Lambda function memory and execution time
+- Use DynamoDB on-demand or provisioned capacity appropriately
+- Implement S3 lifecycle policies for cost optimization
+- Use AWS Cost Explorer to monitor and optimize spending
+- Leverage AWS Free Tier where applicable
+- Implement auto-scaling for cost efficiency
+
+## 18.8 AWS Integration Patterns
+- Use AWS SDK v3 for TypeScript/JavaScript integration
+- Implement proper error handling and retry logic for AWS services
+- Use AWS SDK client-side caching where appropriate
+- Implement proper credential management (IAM roles, temporary credentials)
+- Support multi-region deployments for global agent access
+- Implement proper AWS service quotas and rate limiting handling
+
+# 19. DOCUMENTATION FOR CONVERSATIONAL AGENTS
+
+## 19.1 Rules for Agent Documentation
 - Document agent components, hooks, services, and integrations
+- **Document Agora AI integration** and API usage patterns
+- **Document AWS services used** and their integration patterns
 - Explain agent flow diagrams and conversation patterns
 - Keep docs short and practical for agent development
 - Document agent patterns and best practices
-- Document Agora SDK integration patterns
+- Document Agora SDK integration patterns (RTC, RTM, Live Streaming)
+- Document AWS architecture and service choices
 
-## 17.2 Visual Documentation for Agents
+## 19.2 Visual Documentation for Agents
 - Use diagrams for agent architecture and data flow
+- **Include Agora AI integration diagrams** showing conversation flow
+- **Include AWS architecture diagrams** showing service integration
 - Keep agent design tokens documented
 - Document agent component variations
 - Maintain agent style guide and integration guidelines
-- Document real-time communication flows
+- Document real-time communication flows (Agora SDK)
+- Document AWS service dependencies and data flow
