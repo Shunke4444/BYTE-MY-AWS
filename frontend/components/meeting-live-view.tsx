@@ -129,9 +129,9 @@ export function MeetingLiveView() {
   return (
     <div className="h-full flex overflow-hidden bg-background">
       {/* Center Stage - Video Grid */}
-      <div className="flex-1 flex flex-col bg-gray-50/50 relative">
+      <div className="flex-1 flex flex-col bg-secondary/30 dark:bg-secondary/10 relative">
         {/* Meeting Header */}
-        <div className="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200">
+        <div className="flex items-center justify-between px-6 py-3 bg-card border-b border-border">
           <div className="flex items-center gap-3">
             <div className="flex h-2 w-2 rounded-full bg-destructive animate-pulse" />
             <h1 className="font-semibold text-foreground">Weekly Team Standup</h1>
@@ -151,12 +151,12 @@ export function MeetingLiveView() {
         </div>
 
         {/* Participants Label */}
-        <div className="px-6 py-3 bg-white border-b border-gray-200">
+        <div className="px-6 py-3 bg-card border-b border-border">
           <div className="flex items-center gap-3">
             <span className="text-sm text-muted-foreground">Participants:</span>
             <div className="flex -space-x-2">
               {teamMembers.map((member, idx) => (
-                <Avatar key={member.id} className="h-7 w-7 border-2 border-white">
+                <Avatar key={member.id} className="h-7 w-7 border-2 border-card">
                   <AvatarImage src={member.avatar || "/placeholder.svg"} alt={member.name} />
                   <AvatarFallback className="bg-sage text-white text-xs">
                     {member.name
@@ -175,7 +175,7 @@ export function MeetingLiveView() {
           {teamMembers.map((member, idx) => (
             <div
               key={member.id}
-              className="relative rounded-xl bg-white border border-gray-200 overflow-hidden flex items-center justify-center min-h-[200px] shadow-sm"
+              className="relative rounded-xl bg-card border border-border overflow-hidden flex items-center justify-center min-h-[200px] shadow-sm"
             >
               {/* Avatar/Initials */}
               <Avatar className="h-20 w-20">
@@ -189,8 +189,8 @@ export function MeetingLiveView() {
               </Avatar>
 
               {/* Name Overlay */}
-              <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-md bg-white/90 backdrop-blur-sm border border-gray-200">
-                <span className="text-sm font-medium text-slate-700">{member.name}</span>
+              <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-md bg-card/90 backdrop-blur-sm border border-border">
+                <span className="text-sm font-medium text-foreground">{member.name}</span>
               </div>
 
               {/* Mic Status Indicator */}
@@ -204,12 +204,12 @@ export function MeetingLiveView() {
         </div>
 
         {/* Floating Meeting Controls */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-gray-200 shadow-md">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 px-6 py-3 rounded-full bg-card border border-border shadow-md">
           <Button
             variant="ghost"
             size="icon"
             className={cn(
-              "rounded-full h-12 w-12 hover:bg-gray-100 text-slate-600",
+              "rounded-full h-12 w-12 hover:bg-secondary text-foreground",
               isMuted && "bg-destructive/20 text-destructive hover:bg-destructive/30",
             )}
             onClick={() => setIsMuted(!isMuted)}
@@ -221,7 +221,7 @@ export function MeetingLiveView() {
             variant="ghost"
             size="icon"
             className={cn(
-              "rounded-full h-12 w-12 hover:bg-gray-100 text-slate-600",
+              "rounded-full h-12 w-12 hover:bg-secondary text-foreground",
               !isVideoOn && "bg-destructive/20 text-destructive hover:bg-destructive/30",
             )}
             onClick={() => setIsVideoOn(!isVideoOn)}
@@ -229,15 +229,15 @@ export function MeetingLiveView() {
             {isVideoOn ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
           </Button>
 
-          <Button variant="ghost" size="icon" className="rounded-full h-12 w-12 text-slate-600 hover:bg-gray-100">
+          <Button variant="ghost" size="icon" className="rounded-full h-12 w-12 text-foreground hover:bg-secondary">
             <MessageSquare className="h-5 w-5" />
           </Button>
 
-          <Button variant="ghost" size="icon" className="rounded-full h-12 w-12 text-slate-600 hover:bg-gray-100">
+          <Button variant="ghost" size="icon" className="rounded-full h-12 w-12 text-foreground hover:bg-secondary">
             <Hand className="h-5 w-5" />
           </Button>
 
-          <div className="w-px h-8 bg-gray-200 mx-1" />
+          <div className="w-px h-8 bg-border mx-1" />
 
           <Button
             variant="ghost"
